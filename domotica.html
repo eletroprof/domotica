@@ -1,0 +1,1320 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>UFCD 6091 — Domótica - generalidades</title>
+<meta name="description" content="Percurso formativo de domótica: conceitos, montagem do sistema, automações, cenas e relatório de atividade.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --night-900:#0E0B1A; --night-800:#16122B; --night-700:#1F1A3D;
+  --line:rgba(191,180,255,.16); --line-strong:rgba(191,180,255,.3);
+  --lamp:#FFC061; --lamp-soft:#FFE3B0; --signal:#63E6C8; --alert:#FF7B72;
+  --text:#F0ECFF; --muted:#A79FD0;
+  --sans:"IBM Plex Sans",system-ui,sans-serif;
+  --display:"Bricolage Grotesque",Georgia,serif;
+  --mono:"IBM Plex Mono",ui-monospace,monospace;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--night-900);color:var(--text);font-family:var(--sans);font-size:17px;line-height:1.65;-webkit-font-smoothing:antialiased}
+body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:99;opacity:.32;mix-blend-mode:soft-light;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='.35'/%3E%3C/svg%3E")}
+img,svg{max-width:100%}
+a{color:inherit}
+::selection{background:var(--lamp);color:#20160A}
+
+.wrap{max-width:1180px;margin:0 auto;padding:0 24px}
+.sheet{display:grid;grid-template-columns:92px minmax(0,1fr);gap:0 32px}
+@media(max-width:700px){.sheet{grid-template-columns:1fr}.rail{border-right:0;border-bottom:1px solid var(--line);padding-bottom:12px;margin-bottom:24px;display:flex;gap:12px;align-items:baseline}}
+.rail{border-right:1px solid var(--line);padding-top:8px}
+.rail b{display:block;font-family:var(--mono);font-size:13px;font-weight:500;color:var(--signal)}
+.rail span{display:block;font-size:13px;color:var(--muted);margin-top:4px;padding-right:20px;line-height:1.4}
+section{padding:94px 0;border-top:1px solid var(--line)}
+section:nth-of-type(even){background:var(--night-800)}
+h1,h2,h3{font-family:var(--display);font-weight:600;letter-spacing:-.025em;margin:0}
+h2{font-size:clamp(1.9rem,4vw,2.8rem);line-height:1.07;max-width:17ch}
+h3{font-size:1.2rem;letter-spacing:-.01em;margin-bottom:6px}
+p{max-width:66ch;margin:16px 0 0}
+.lead{font-size:1.08rem;color:#DAD4F5}
+.muted{color:var(--muted)}
+.sub{margin-top:56px;font-size:1.5rem}
+
+header{position:sticky;top:0;z-index:50;background:rgba(14,11,26,.85);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+.bar{display:flex;align-items:center;gap:24px;height:62px}
+.mark{display:flex;align-items:center;gap:10px;font-family:var(--display);font-weight:600;font-size:1.02rem;text-decoration:none;white-space:nowrap}
+.dot{width:9px;height:9px;border-radius:50%;background:var(--lamp);box-shadow:0 0 14px var(--lamp);flex:none}
+.thin{font-weight:400;color:var(--muted)}
+@media(max-width:640px){.thin{display:none}}
+nav{margin-left:auto;display:flex;gap:22px;font-size:14.5px}
+nav a{color:var(--muted);text-decoration:none;padding:4px 0;border-bottom:1px solid transparent}
+nav a:hover,nav a:focus-visible{color:var(--text);border-color:var(--lamp)}
+@media(max-width:980px){nav{display:none}}
+.skip{position:absolute;left:-9999px}
+.skip:focus{left:16px;top:12px;background:var(--lamp);color:#20160A;padding:8px 14px;border-radius:6px;z-index:100}
+
+.hero{padding:74px 0 86px;border-top:0}
+.hero-grid{display:grid;grid-template-columns:minmax(0,.95fr) minmax(0,1.05fr);gap:54px;align-items:start}
+@media(max-width:980px){.hero-grid{grid-template-columns:1fr;gap:40px}}
+.ufcd{font-family:var(--mono);font-size:12.5px;color:var(--signal);letter-spacing:.06em;display:block;margin-bottom:18px}
+h1{font-size:clamp(2.4rem,5.6vw,4rem);line-height:1;font-weight:800;letter-spacing:-.04em}
+h1 em{font-style:normal;color:var(--lamp-soft)}
+.hero p{font-size:1.1rem;color:#DAD4F5}
+.percurso{margin:34px 0 0;padding:0;list-style:none;counter-reset:p}
+.percurso li{counter-increment:p;display:flex;gap:16px;padding:13px 0;border-top:1px solid var(--line);font-size:15px;color:#C9C2EA}
+.percurso li::before{content:counter(p,decimal-leading-zero);font-family:var(--mono);font-size:12px;color:var(--signal);padding-top:4px}
+.percurso a{color:var(--text);text-decoration:none;border-bottom:1px solid var(--line-strong)}
+.percurso a:hover{border-color:var(--lamp)}
+.percurso i{font-style:normal;color:var(--muted)}
+
+.plan-frame{background:linear-gradient(160deg,var(--night-800),#120F24);border:1px solid var(--line);border-radius:20px;padding:18px;box-shadow:0 40px 80px -50px #000}
+.plan-top{display:flex;align-items:baseline;gap:12px;padding:2px 6px 14px;font-family:var(--mono);font-size:11.5px;color:var(--muted)}
+.plan-top .k{color:var(--signal)}
+.plan-top .r{margin-left:auto}
+.room{fill:#1A1633;stroke:rgba(191,180,255,.22);stroke-width:1.5}
+.roomGlow{opacity:0;transition:opacity .7s ease;pointer-events:none}
+.roomGlow.lit{opacity:1}
+.rname{font-family:var(--mono);font-size:11px;fill:#7E76AE;letter-spacing:.06em}
+.link-radio{stroke:rgba(99,230,200,.16);stroke-width:1.1;fill:none;stroke-dasharray:2 6}
+.dev{cursor:pointer}
+.dev .halo{fill:transparent;transition:fill .3s}
+.dev .body{fill:#241F44;stroke:#5A5290;stroke-width:1.4;transition:fill .3s,stroke .3s,stroke-width .2s}
+.dev .gl{stroke:#A79FD0;stroke-width:1.5;fill:none;stroke-linecap:round;stroke-linejoin:round;transition:stroke .3s}
+.dev.sensor .body{stroke:rgba(99,230,200,.5)}
+.dev.on .body{fill:#3A2A18;stroke:var(--lamp)}
+.dev.on .gl{stroke:var(--lamp)}
+.dev.on .halo{fill:rgba(255,192,97,.14)}
+.dev.sensor.on .body{fill:#12332F;stroke:var(--signal)}
+.dev.sensor.on .gl{stroke:var(--signal)}
+.dev.sensor.on .halo{fill:rgba(99,230,200,.16)}
+.dev.alarm .body{fill:#3A1A1C;stroke:var(--alert)}
+.dev.alarm .gl{stroke:var(--alert)}
+.dev.trig .body{stroke:var(--signal);stroke-width:2.8}
+.dev.trig .halo{fill:rgba(99,230,200,.22)}
+.dev:focus{outline:none}
+.dev:focus-visible .halo,.dev:hover .halo{fill:rgba(191,180,255,.16)}
+.dev.sel .body{stroke-width:2.6}
+.central .body{fill:#221D42;stroke:var(--signal);stroke-width:1.6}
+.readonly .dev{cursor:default;pointer-events:none}
+.emptyplan{font-family:var(--mono);font-size:12px;fill:#6C6598;letter-spacing:.06em}
+
+.tag{display:inline-block;font-family:var(--mono);font-size:11px;letter-spacing:.04em;padding:3px 8px;border-radius:5px;border:1px solid currentColor}
+.tag.a{color:var(--lamp)} .tag.s{color:var(--signal)} .tag.x{color:var(--alert)} .tag.n{color:var(--muted)}
+
+.chain{display:grid;grid-template-columns:repeat(4,1fr);margin-top:42px}
+@media(max-width:820px){.chain{grid-template-columns:1fr}}
+.linkc{padding:22px 24px 26px;border-left:2px solid var(--line)}
+.linkc:first-child{border-left-color:var(--signal)}
+.linkc:last-child{border-left-color:var(--lamp)}
+.linkc .step{font-family:var(--mono);font-size:12px;color:var(--muted)}
+.linkc p{font-size:14.8px;color:#C9C2EA;margin-top:8px}
+.linkc .eg{display:block;margin-top:12px;font-family:var(--mono);font-size:12px;color:var(--muted);line-height:1.7}
+
+.tablewrap{margin-top:34px;overflow-x:auto;border:1px solid var(--line);border-radius:14px}
+table{border-collapse:collapse;width:100%;min-width:740px;font-size:14.5px}
+th,td{text-align:left;padding:14px 18px;border-bottom:1px solid var(--line);vertical-align:top}
+thead th{font-family:var(--mono);font-weight:500;font-size:12px;color:var(--signal);background:rgba(99,230,200,.05)}
+tbody tr:last-child td{border-bottom:0}
+tbody th{font-weight:600;color:var(--text);white-space:nowrap}
+td{color:#C4BDE6}
+
+.rows{margin-top:38px;border-top:1px solid var(--line)}
+.row{display:grid;grid-template-columns:200px minmax(0,1fr);gap:24px;padding:22px 0;border-bottom:1px solid var(--line)}
+@media(max-width:760px){.row{grid-template-columns:1fr;gap:6px}}
+.row h3{font-size:1.04rem;margin:0}
+.row p{margin:0;font-size:15px;color:#C4BDE6}
+.row .ex{display:block;margin-top:8px;font-family:var(--mono);font-size:12.5px;color:var(--muted)}
+
+.workgrid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.04fr);gap:34px;margin-top:32px;align-items:start}
+@media(max-width:1020px){.workgrid{grid-template-columns:1fr;gap:28px}}
+.panel{border:1px solid var(--line);border-radius:18px;background:rgba(255,255,255,.02);padding:22px}
+.grouph{font-family:var(--mono);font-size:11.5px;letter-spacing:.06em;color:var(--signal);margin:22px 0 4px}
+.grouph:first-child{margin-top:0}
+.catrow{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--line)}
+.catrow:last-child{border-bottom:0}
+.catrow .n{flex:1;min-width:0}
+.catrow .n b{display:block;font-size:14.6px;font-weight:500;color:#DAD4F5;line-height:1.3}
+.catrow .n span{font-family:var(--mono);font-size:11.5px;color:var(--muted)}
+select,input[type=text],textarea{background:var(--night-700);color:var(--text);border:1px solid var(--line-strong);border-radius:10px;font:400 14.5px/1.35 var(--sans);padding:11px 12px}
+select{cursor:pointer}
+select.mini{padding:8px 9px;font-size:12.5px;max-width:126px}
+select:focus-visible,input:focus-visible,textarea:focus-visible{outline:2px solid var(--lamp);outline-offset:2px}
+textarea{resize:vertical;line-height:1.6;width:100%}
+.add{background:transparent;border:1px solid var(--line-strong);color:var(--muted);border-radius:8px;font:500 12.5px/1 var(--mono);padding:9px 11px;cursor:pointer;flex:none;transition:color .2s,border-color .2s}
+.add:hover{color:var(--lamp);border-color:var(--lamp)}
+.run{background:var(--lamp);color:#20160A;border:0;border-radius:10px;font:600 14.5px/1 var(--sans);padding:13px 18px;cursor:pointer;transition:filter .2s}
+.run:hover{filter:brightness(1.08)}
+.run[disabled]{background:#4A4370;color:#9A93BE;cursor:not-allowed;filter:none}
+.ghost{background:transparent;border:1px solid var(--line-strong);color:var(--muted);border-radius:10px;font:500 13.5px/1 var(--sans);padding:13px 15px;cursor:pointer;transition:color .2s,border-color .2s}
+.ghost:hover{color:var(--text);border-color:var(--lamp)}
+.ghost[disabled]{opacity:.45;cursor:not-allowed;border-color:var(--line)}
+.ghost[disabled]:hover{color:var(--muted);border-color:var(--line)}
+.tools{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px;align-items:center}
+.tools input[type=text]{flex:1;min-width:150px}
+.readout{margin-top:14px;font-family:var(--mono);font-size:12.5px;color:var(--muted);line-height:1.75;min-height:32px}
+.readout b{color:var(--lamp);font-weight:500}
+.readout.warn b{color:var(--alert)}
+
+.itemlist{margin:16px 0 0;padding:0;list-style:none}
+.itemlist li{display:flex;gap:10px;align-items:flex-start;padding:10px 0;border-bottom:1px solid var(--line);font-size:14.4px;color:#C9C2EA}
+.itemlist li:last-child{border-bottom:0}
+.itemlist .who{flex:1;min-width:0}
+.itemlist .who em{font-style:normal;display:block;font-family:var(--mono);font-size:11.5px;color:var(--muted);margin-top:2px}
+.del{background:transparent;border:0;color:var(--muted);font-family:var(--mono);font-size:14px;cursor:pointer;padding:2px 6px;flex:none}
+.del:hover{color:var(--alert)}
+.mini-run{background:transparent;border:1px solid var(--line);color:var(--muted);border-radius:7px;font:500 11.5px/1 var(--mono);padding:7px 9px;cursor:pointer;flex:none}
+.mini-run:hover{color:var(--lamp);border-color:var(--lamp)}
+.empty{font-size:14px;color:var(--muted);margin-top:14px}
+
+.diag{margin-top:18px;border-top:1px solid var(--line);padding-top:14px}
+.diag div{display:flex;gap:10px;font-size:13.8px;padding:6px 0;color:#C4BDE6}
+.diag .ic{font-family:var(--mono);font-size:12px;flex:none;padding-top:2px}
+.diag .ok .ic{color:var(--signal)}
+.diag .no .ic{color:var(--alert)}
+.diag .tip .ic{color:var(--lamp)}
+
+.rowsel{display:grid;grid-template-columns:auto minmax(0,1fr);gap:12px 14px;align-items:center}
+.rowsel .kw{font-family:var(--display);font-size:1.1rem;color:var(--signal);font-weight:600}
+.rowsel .kw.and{color:var(--muted);font-size:.98rem}
+.rowsel .kw.then{color:var(--lamp)}
+pre{margin:20px 0 0;background:#100D1F;border:1px solid var(--line);border-radius:12px;padding:16px;overflow-x:auto;font-family:var(--mono);font-size:13px;line-height:1.8;color:#CFC8F0}
+pre .k{color:var(--signal)} pre .a{color:var(--lamp)}
+.note{margin-top:14px;font-size:14.4px;color:var(--muted);border-left:2px solid var(--lamp);padding-left:14px}
+
+.vs{display:grid;grid-template-columns:1fr 1fr;border:1px solid var(--line);border-radius:16px;overflow:hidden;margin-top:34px}
+@media(max-width:760px){.vs{grid-template-columns:1fr}}
+.vs>div{padding:24px}
+.vs>div+div{border-left:1px solid var(--line)}
+@media(max-width:760px){.vs>div+div{border-left:0;border-top:1px solid var(--line)}}
+.vs h3{margin-top:12px}
+.vs p{font-size:14.8px;color:#C9C2EA}
+.mini-dl{margin-top:16px}
+.mini-dl div{display:flex;gap:12px;padding:8px 0;border-top:1px solid var(--line);font-size:13.8px;color:#C4BDE6}
+.mini-dl span:first-child{font-family:var(--mono);font-size:11.5px;color:var(--muted);min-width:82px;flex:none;padding-top:3px}
+
+.devrow{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--line)}
+.devrow:last-child{border-bottom:0}
+.dn{flex:1;font-size:14.3px;color:#CFC8F0;line-height:1.35}
+.seg{display:flex;border:1px solid var(--line);border-radius:8px;overflow:hidden;flex:none}
+.seg button{background:transparent;border:0;border-left:1px solid var(--line);color:var(--muted);font:500 11px/1 var(--mono);padding:8px;cursor:pointer;white-space:nowrap}
+.seg button:first-child{border-left:0}
+.seg button:hover{color:var(--text)}
+.seg button.sel{background:rgba(191,180,255,.1);color:var(--text)}
+.seg button[data-v="on"].sel{background:rgba(255,192,97,.16);color:var(--lamp)}
+.namechips{display:flex;flex-wrap:wrap;gap:6px;margin-top:16px}
+.namechip{background:transparent;border:1px dashed var(--line-strong);color:var(--muted);border-radius:999px;font:500 12.5px/1 var(--sans);padding:8px 12px;cursor:pointer}
+.namechip:hover{color:var(--lamp);border-color:var(--lamp)}
+.saved{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+.scene-chip{display:inline-flex;align-items:stretch;border:1px solid var(--line-strong);border-radius:999px;overflow:hidden}
+.scene-chip button{background:transparent;border:0;color:var(--text);font:500 13.5px/1 var(--sans);padding:10px 15px;cursor:pointer}
+.scene-chip .apply:hover{color:var(--lamp)}
+.scene-chip .del{border-left:1px solid var(--line);padding:10px 12px}
+
+dl{margin:34px 0 0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 44px}
+@media(max-width:760px){dl{grid-template-columns:1fr}}
+dt{font-weight:600;font-size:15.4px;padding-top:18px;border-top:1px solid var(--line)}
+dd{margin:6px 0 18px;font-size:14.5px;color:#B7AFDD}
+
+.idform{display:grid;gap:10px;margin-top:28px;max-width:660px}
+.report{margin-top:40px}
+.report:empty{display:none}
+.rep-head{border-top:2px solid var(--lamp);padding-top:20px}
+.rep-head h3{font-family:var(--display);font-size:1.45rem}
+.rep-sub{font-family:var(--mono);font-size:12.5px;color:var(--signal);margin-top:6px;letter-spacing:.04em}
+.rep-meta{font-family:var(--mono);font-size:12.5px;color:var(--muted);margin-top:10px;line-height:1.95}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));margin-top:24px;border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.stat{padding:15px 17px;border-left:1px solid var(--line)}
+.stat:first-child{border-left:0}
+.stat b{display:block;font-family:var(--display);font-size:1.7rem;font-weight:600;color:var(--lamp);line-height:1.15}
+.stat span{font-size:12.5px;color:var(--muted)}
+.rep-h{font-family:var(--display);font-size:1.1rem;margin-top:34px;padding-bottom:8px;border-bottom:1px solid var(--line)}
+.rep-list{margin:0;padding:0;list-style:none}
+.rep-list li{padding:10px 0;border-bottom:1px solid var(--line);font-size:14.5px;color:#C9C2EA}
+.rep-list li em{font-style:normal;font-family:var(--mono);font-size:11.5px;color:var(--muted);margin-right:10px}
+.rep-list li b{font-weight:600;color:var(--text)}
+.rep-note{margin-top:14px;font-size:14.5px;color:#C9C2EA;white-space:pre-wrap}
+.rep-foot{margin-top:36px;padding-top:16px;border-top:1px solid var(--line);font-size:13.5px;color:var(--muted);line-height:1.85}
+.rep-foot b{color:var(--text);font-weight:600}
+
+footer{padding:54px 0 70px;border-top:1px solid var(--line);color:var(--muted);font-size:14px}
+footer p{max-width:62ch}
+
+@media print{
+  :root{--night-900:#fff;--night-800:#fff;--night-700:#fff;--text:#111;--muted:#555;--line:#ccc;--line-strong:#999;--lamp:#8A5300;--signal:#00655A}
+  body{background:#fff;color:#111;font-size:11.5pt}
+  body::before{display:none}
+  header,footer,.noprint{display:none!important}
+  main>section:not(#relatorio){display:none!important}
+  #relatorio{padding:0;border:0}
+  .sheet{display:block}
+  .rail,.lead,#logStatus{display:none}
+  #relatorio h2{font-size:1.35rem}
+  .rep-list li,.stats{break-inside:avoid}
+  .rep-list li{color:#222}
+  .rep-foot{color:#333;border-top:1px solid #999}
+}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition-duration:.01ms!important;animation-duration:.01ms!important}}
+</style>
+</head>
+<body>
+<a class="skip" href="#conceitos">Saltar para o conteúdo</a>
+
+<header>
+  <div class="wrap bar">
+    <a class="mark" href="#topo"><span class="dot" aria-hidden="true"></span> Domótica <span class="thin">- generalidades</span></a>
+    <nav>
+      <a href="#conceitos">Conceitos</a>
+      <a href="#comunicacao">Comunicação</a>
+      <a href="#montar">Montar</a>
+      <a href="#automacoes">Automações</a>
+      <a href="#cenas">Cenas</a>
+      <a href="#praticas">Boas práticas</a>
+      <a href="#relatorio">Relatório</a>
+    </nav>
+  </div>
+</header>
+
+<main id="topo">
+
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <span class="ufcd">UFCD 6091 · Domótica - generalidades</span>
+      <h1>Uma casa vazia<br>e <em>tudo por decidir.</em></h1>
+      <p>Este percurso não se limita a explicar domótica: termina com um sistema projetado de raiz. Primeiro os conceitos, depois a escolha do equipamento, depois a programação — e no fim um relatório com todas as decisões tomadas.</p>
+      <ol class="percurso">
+        <li><span><a href="#conceitos">Conceitos</a> <i>— o que é um sensor, um atuador e uma central</i></span></li>
+        <li><span><a href="#comunicacao">Comunicação</a> <i>— Zigbee, Wi-Fi e os módulos Shelly e Sonoff</i></span></li>
+        <li><span><a href="#montar">Montar o sistema</a> <i>— escolher e instalar o equipamento na planta</i></span></li>
+        <li><span><a href="#automacoes">Automações</a> <i>— construir regras «se… então…»</i></span></li>
+        <li><span><a href="#cenas">Cenas</a> <i>— modo noite, modo verão, modo ausente</i></span></li>
+        <li><span><a href="#relatorio">Relatório</a> <i>— o registo de tudo o que foi feito</i></span></li>
+      </ol>
+    </div>
+    <div>
+      <div class="plan-frame">
+        <div class="plan-top"><span class="k">planta T1 · piso 0</span><span id="heroCount">por equipar</span><span class="r" id="clock">00:00</span></div>
+        <div id="planHero"></div>
+      </div>
+      <p class="readout">A planta acompanha o trabalho em todos os módulos: enche-se à medida que o equipamento é instalado e reage às automações e às cenas.</p>
+    </div>
+  </div>
+</section>
+
+<section id="conceitos">
+  <div class="wrap sheet">
+    <div class="rail"><b>01</b><span>Conceitos</span></div>
+    <div>
+      <h2>Quatro peças, sempre as mesmas</h2>
+      <p class="lead">Por mais complexa que pareça uma instalação, reduz-se a esta cadeia. Muda o equipamento, muda a marca, muda o preço — a lógica mantém-se.</p>
+      <div class="chain">
+        <div class="linkc"><span class="step">mede</span><h3>Sensor</h3>
+          <p>Transforma uma grandeza física num valor que o sistema entende: temperatura, luz, presença, humidade, consumo, abertura de uma porta.</p>
+          <span class="eg">movimento (PIR)<br>temperatura e humidade<br>contacto de janela</span></div>
+        <div class="linkc"><span class="step">decide</span><h3>Central</h3>
+          <p>Recebe os valores, compara-os com as regras programadas e determina o que deve acontecer. É o cérebro, e reside dentro da habitação.</p>
+          <span class="eg">servidor local<br>coordenador Zigbee<br>broker MQTT</span></div>
+        <div class="linkc"><span class="step">executa</span><h3>Atuador</h3>
+          <p>Converte a decisão em ação física. É a peça que consome energia e a que se ouve trabalhar: um relé a fechar, um motor a subir um estore.</p>
+          <span class="eg">módulo de iluminação<br>módulo de estore<br>válvula termostática</span></div>
+        <div class="linkc"><span class="step">comanda</span><h3>Interface</h3>
+          <p>O ponto onde a pessoa entra na cadeia. A melhor interface é a que quase não é usada, porque as regras já resolveram o caso comum.</p>
+          <span class="eg">interruptor de parede<br>botão sem fios<br>aplicação no telemóvel</span></div>
+      </div>
+      <p>A ordem não é arbitrária: a central ocupa o meio de propósito. Ligar o sensor diretamente ao atuador resultaria apenas num interruptor caro. O valor está na decisão — poder impor <em>só se estiver escuro</em>, <em>só depois das 23h</em>, <em>só se não houver ninguém em casa</em>.</p>
+
+      <h3 class="sub">Para que serve, na prática</h3>
+      <p>Conforto é o argumento comercial. Energia, segurança e autonomia são as razões que justificam o investimento.</p>
+      <div class="rows">
+        <div class="row"><h3>Energia</h3><div><p>Aquecer apenas as divisões ocupadas, cortar consumos em espera e deslocar máquinas para as horas de tarifa reduzida ou de produção solar.</p><span class="ex">termostatos por zona · tomadas com medição · gestão de cargas</span></div></div>
+        <div class="row"><h3>Segurança</h3><div><p>Detetar o que uma pessoa não deteta a tempo: fumo, monóxido de carbono, uma fuga de água. Avisar e agir de imediato — fechar a válvula, destrancar a porta.</p><span class="ex">detetores · eletroválvulas · videoporteiro</span></div></div>
+        <div class="row"><h3>Conforto</h3><div><p>Cenas que alteram vários equipamentos em simultâneo, e ajustes contínuos que passam despercebidos: a luz que compensa o entardecer, o estore que trava o sol de verão.</p><span class="ex">cenas · regulação de fluxo · sombreamento automático</span></div></div>
+        <div class="row"><h3>Acessibilidade</h3><div><p>A aplicação socialmente mais relevante. Comando por voz, deteção de queda e controlo remoto devolvem autonomia a quem tem mobilidade reduzida ou vive só.</p><span class="ex">controlo por voz · alertas de inatividade · aberturas motorizadas</span></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="comunicacao">
+  <div class="wrap sheet">
+    <div class="rail"><b>02</b><span>Comunicação</span></div>
+    <div>
+      <h2>A parte difícil é o idioma</h2>
+      <p class="lead">Equipamentos de fabricantes diferentes só cooperam se falarem o mesmo protocolo, ou se algo traduzir entre eles. Uma escolha errada nesta fase é o erro que mais caro fica numa instalação.</p>
+      <div class="tablewrap">
+        <table>
+          <thead><tr><th scope="col">Protocolo</th><th scope="col">Banda</th><th scope="col">Topologia</th><th scope="col">Consumo</th><th scope="col">Onde faz sentido</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">Zigbee</th><td>2,4 GHz (e 868 MHz na Europa)</td><td>Malha: cada equipamento ligado à corrente repete a mensagem</td><td>Muito baixo, anos com pilha</td><td>A escolha por omissão para sensores e iluminação. Exige um coordenador, mas não sobrecarrega o Wi‑Fi.</td></tr>
+            <tr><th scope="row">Wi‑Fi</th><td>2,4 / 5 GHz</td><td>Estrela: tudo passa pelo router</td><td>Elevado, exige alimentação</td><td>Módulos Shelly e Sonoff atrás do interruptor, tomadas e câmaras. Dezenas de equipamentos saturam a rede.</td></tr>
+            <tr><th scope="row">Thread</th><td>2,4 GHz, com endereços IP</td><td>Malha, sem coordenador obrigatório</td><td>Baixo</td><td>Base moderna para equipamentos sem fios; é o transporte preferido do Matter.</td></tr>
+            <tr><th scope="row">Z‑Wave</th><td>868 MHz na Europa</td><td>Malha</td><td>Muito baixo</td><td>Alternativa ao Zigbee, fora da banda do Wi‑Fi. Catálogo menor e mais caro.</td></tr>
+            <tr><th scope="row">Bluetooth LE</th><td>2,4 GHz, curto alcance</td><td>Ponto a ponto ou malha</td><td>Muito baixo</td><td>Configuração inicial e equipamentos usados de perto, como fechaduras.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p><strong>E o Matter?</strong> Não concorre com estes: é a camada de aplicação colocada por cima do Thread, do Wi‑Fi ou da Ethernet para que uma lâmpada de uma marca seja reconhecida por uma aplicação de outra sem depender da nuvem de nenhuma delas. Resolve o vocabulário, não o rádio.</p>
+      <div class="rows">
+        <div class="row"><h3>Módulos Shelly</h3><div><p>Relés Wi‑Fi de pequena dimensão, instalados dentro da caixa do interruptor ou da luminária. Mantêm o interruptor de parede operacional e aceitam comando local por HTTP ou MQTT, sem conta na nuvem.</p><span class="ex">Shelly 1 · Shelly 2PM (estores) · Shelly Dimmer · Shelly Plug S</span></div></div>
+        <div class="row"><h3>Módulos Sonoff</h3><div><p>Gama económica com duas famílias: os Wi‑Fi, frequentemente reprogramados com firmware aberto, e os ZB, que são Zigbee e comunicam com o coordenador em vez do router.</p><span class="ex">Sonoff ZBMini · SNZB-01 · SNZB-02 · SNZB-03 · SNZB-04</span></div></div>
+        <div class="row"><h3>Critério de escolha</h3><div><p>Zigbee para tudo o que seja sensor, equipamento a pilhas ou lâmpada, porque a malha cresce por si e não sobrecarrega a rede. Wi‑Fi apenas onde há corrente e o circuito já existe: um módulo atrás do interruptor torna comandável uma luz vulgar sem abrir paredes.</p></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="montar">
+  <div class="wrap sheet">
+    <div class="rail"><b>03</b><span>Montar</span></div>
+    <div>
+      <h2>Montar o sistema</h2>
+      <p class="lead">A habitação está vazia. Para cada equipamento do catálogo escolhe-se a divisão e instala-se. Nada do que vem a seguir — automações e cenas — poderá usar aquilo que não for instalado aqui.</p>
+
+      <div class="workgrid">
+        <div class="panel">
+          <div id="catalog"></div>
+        </div>
+        <div>
+          <div class="plan-frame">
+            <div class="plan-top"><span class="k">instalação</span><span id="planCount">0 equipamentos</span></div>
+            <div id="planMontar"></div>
+          </div>
+          <p class="readout" id="montarOut">Selecione uma divisão e instale o primeiro equipamento.</p>
+          <div class="panel" style="margin-top:16px">
+            <h3 style="font-size:1rem">Equipamento instalado</h3>
+            <ul class="itemlist" id="installedList"></ul>
+            <div class="diag" id="diag"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="automacoes">
+  <div class="wrap sheet">
+    <div class="rail"><b>04</b><span>Automações</span></div>
+    <div>
+      <h2>Automação: a casa decide sozinha</h2>
+      <p class="lead">Uma automação é uma condição e uma consequência que a central vigia permanentemente. Verificada a condição, a ação executa-se sem que ninguém intervenha. As opções seguintes derivam do equipamento efetivamente instalado no módulo anterior.</p>
+
+      <div class="workgrid">
+        <div class="panel">
+          <div class="rowsel">
+            <span class="kw">Se</span><select id="trigger" aria-label="Condição que dispara a automação"></select>
+            <span class="kw and">E</span><select id="cond" aria-label="Condição adicional, opcional"></select>
+            <span class="kw then">Então</span><select id="action" aria-label="Ação a executar"></select>
+          </div>
+          <div class="tools">
+            <button class="run" id="testRule">Testar na casa</button>
+            <button class="ghost" id="saveRule">Guardar automação</button>
+          </div>
+          <pre id="pseudo" aria-live="polite"></pre>
+          <p class="note" id="ruleNote"></p>
+        </div>
+        <div>
+          <div class="plan-frame">
+            <div class="plan-top"><span class="k">execução</span><span>o sinal percorre o caminho real</span></div>
+            <div id="planAuto"></div>
+          </div>
+          <p class="readout" id="autoOut">Nenhuma automação executada.</p>
+          <div class="panel" style="margin-top:16px">
+            <h3 style="font-size:1rem">Automações guardadas</h3>
+            <ul class="itemlist" id="ruleList"></ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="cenas">
+  <div class="wrap sheet">
+    <div class="rail"><b>05</b><span>Cenas</span></div>
+    <div>
+      <h2>Cena não é automação</h2>
+      <p class="lead">São as duas maneiras de programar uma casa e confundem-se com frequência. A diferença está em quem dá a ordem e em que momento ela é dada.</p>
+
+      <div class="vs">
+        <div>
+          <span class="tag a">cena</span>
+          <h3>Uma fotografia da casa</h3>
+          <p>Guarda um valor definido para cada equipamento escolhido e aplica-os todos ao mesmo tempo. Não tem condições nem espera por nada: só ocorre quando é chamada.</p>
+          <div class="mini-dl">
+            <div><span>ordem</span><span>uma pessoa, um botão de parede ou uma automação</span></div>
+            <div><span>momento</span><span>apenas quando é invocada</span></div>
+            <div><span>exemplo</span><span>Modo noite — luz exterior acesa, estores fechados, tomadas cortadas</span></div>
+          </div>
+        </div>
+        <div>
+          <span class="tag s">automação</span>
+          <h3>Uma frase condicional</h3>
+          <p>Fica permanentemente à espera de que algo se verifique. Quando isso acontece, a ação executa-se sozinha, esteja alguém em casa ou não.</p>
+          <div class="mini-dl">
+            <div><span>ordem</span><span>a própria central, a partir de um sensor ou do relógio</span></div>
+            <div><span>momento</span><span>sempre que a condição se verificar</span></div>
+            <div><span>exemplo</span><span>Se houver movimento no corredor depois das 23h, então acender a 20%</span></div>
+          </div>
+        </div>
+      </div>
+
+      <p>Na prática combinam-se, e é aí que a distinção deixa de ser teórica: a ação de uma automação costuma ser precisamente <em>aplicar uma cena</em>. As cenas criadas em baixo passam a estar disponíveis como ação no módulo 04.</p>
+
+      <h3 class="sub">Compor uma cena</h3>
+      <p>Para cada atuador escolhe-se um estado, ou deixa-se em <em>manter</em> — nesse caso a cena não lhe toca e o equipamento fica como estiver. A lista contém apenas atuadores: uma cena comanda quem age, nunca quem mede.</p>
+
+      <div class="workgrid">
+        <div class="panel">
+          <div id="composerList"></div>
+          <div class="tools">
+            <button class="ghost" id="capture">Copiar o estado atual</button>
+            <button class="ghost" id="clearDraft">Repor em manter</button>
+            <button class="run" id="preview">Pré-visualizar</button>
+          </div>
+          <div class="namechips" id="nameChips"></div>
+          <div class="tools">
+            <input type="text" id="sceneName" placeholder="Nome da cena" aria-label="Nome da cena">
+            <button class="run" id="saveScene">Guardar cena</button>
+          </div>
+        </div>
+        <div>
+          <div class="plan-frame">
+            <div class="plan-top"><span class="k">pré-visualização</span><span>estado partilhado com os restantes módulos</span></div>
+            <div id="planCenas"></div>
+          </div>
+          <p class="readout" id="sceneOut">Nenhum equipamento definido.</p>
+          <div class="saved" id="savedScenes"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="praticas">
+  <div class="wrap sheet">
+    <div class="rail"><b>06</b><span>Boas práticas</span></div>
+    <div>
+      <h2>O que separa um bom projeto de um mau</h2>
+      <p class="lead">Estas seis decisões não custam dinheiro. Custam atenção — e são as que se notam três anos depois.</p>
+      <div class="rows">
+        <div class="row"><h3>Funciona sem internet</h3><div><p>Se a automação da luz depende de um servidor a mil quilómetros, uma falha de rede deixa a casa às escuras. Os módulos Shelly e Sonoff aceitam comando local por MQTT: convém recorrer a esse comando e reservar a nuvem para o acesso remoto.</p></div></div>
+        <div class="row"><h3>Falha em segurança</h3><div><p>Importa perguntar sempre o que acontece quando falta energia ou o sistema avaria. Uma fechadura tem de deixar sair. Um estore não pode prender-se a meio. Um detetor de fumo funciona com bateria própria.</p></div></div>
+        <div class="row"><h3>Comando manual sempre</h3><div><p>Todas as divisões mantêm um interruptor físico que funciona sem telemóvel e sem conta criada. É por isso que o módulo se instala atrás do interruptor e não em vez dele.</p></div></div>
+        <div class="row"><h3>Palavras-passe e atualizações</h3><div><p>Trocar as credenciais de fábrica, ativar autenticação em dois passos e manter o firmware atualizado. Muitos equipamentos são atacados por virem todos com a mesma palavra-passe.</p></div></div>
+        <div class="row"><h3>Rede separada</h3><div><p>Colocar os equipamentos numa rede ou VLAN própria limita o estrago: se um for comprometido, não alcança o computador onde estão os ficheiros pessoais.</p></div></div>
+        <div class="row"><h3>Privacidade por omissão</h3><div><p>Câmaras e microfones apenas onde exista motivo, nunca em quartos ou casas de banho, e com aviso a quem entra na habitação. Saber onde ficam guardadas as gravações faz parte do projeto.</p></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="glossario">
+  <div class="wrap sheet">
+    <div class="rail"><b>07</b><span>Glossário</span></div>
+    <div>
+      <h2>Vocabulário mínimo</h2>
+      <dl>
+        <dt>Sensor</dt><dd>Equipamento que mede uma grandeza e a comunica ao sistema.</dd>
+        <dt>Atuador</dt><dd>Equipamento que executa uma ação física: relé, motor, válvula, fechadura.</dd>
+        <dt>Central</dt><dd>Onde residem as regras e onde se toma a decisão. Sem central não há automação possível.</dd>
+        <dt>Coordenador</dt><dd>Peça que forma e gere a rede Zigbee, normalmente ligada à central.</dd>
+        <dt>Automação</dt><dd>Regra condicional vigiada em permanência: verificada a condição, a ação executa-se sozinha.</dd>
+        <dt>Cena</dt><dd>Conjunto de estados guardados que se aplicam de uma só vez, apenas quando invocados.</dd>
+        <dt>Rede em malha</dt><dd>Topologia em que cada equipamento ligado à corrente reencaminha mensagens dos outros.</dd>
+        <dt>MQTT</dt><dd>Protocolo leve de mensagens muito usado para comando local, sem passar pela nuvem do fabricante.</dd>
+        <dt>Latência</dt><dd>Tempo entre a ordem e a resposta. Acima de meio segundo num interruptor já incomoda.</dd>
+        <dt>Falha em segurança</dt><dd>Princípio de projeto: em caso de avaria, o sistema fica no estado menos perigoso.</dd>
+      </dl>
+    </div>
+  </div>
+</section>
+
+<section id="relatorio">
+  <div class="wrap sheet">
+    <div class="rail"><b>08</b><span>Relatório</span></div>
+    <div>
+      <h2>Relatório da sessão</h2>
+      <p class="lead">Reúne o sistema montado, as automações construídas, as cenas criadas e o registo cronológico do trabalho. Pode ser impresso, guardado em PDF ou descarregado para entrega.</p>
+      <p class="readout" id="logStatus">Registadas <b id="logCount">0</b> ações nesta sessão.</p>
+
+      <div class="idform noprint">
+        <input type="text" id="stName" placeholder="Nome do formando" aria-label="Nome do formando">
+        <input type="text" id="stClass" placeholder="Turma ou grupo de formação" aria-label="Turma ou grupo de formação">
+        <textarea id="stNotes" rows="3" placeholder="Justificação das opções tomadas e conclusões (opcional)" aria-label="Observações e conclusões"></textarea>
+        <div class="tools">
+          <button class="run" id="genReport">Gerar relatório</button>
+          <button class="ghost" id="printReport">Imprimir ou guardar em PDF</button>
+          <button class="ghost" id="dlReport">Descarregar (.html)</button>
+        </div>
+      </div>
+      <div id="reportBody" class="report"></div>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap sheet">
+    <div class="rail"><b>fim</b></div>
+    <div>
+      <p>UFCD 6091 — Domótica - generalidades. Formador: Eng. Rui Loureiro. A planta, as automações e as cenas são simulações destinadas à compreensão da lógica; não substituem projeto de instalação nem o cumprimento das regras técnicas em vigor.</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function(){
+"use strict";
+var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+var NS = "http://www.w3.org/2000/svg";
+
+/* ---------------- registo ---------------- */
+var startedAt = new Date(), journal = [];
+function log(cat, txt){
+  journal.push({ts:new Date(), cat:cat, txt:txt});
+  var c = document.getElementById("logCount");
+  if(c) c.textContent = journal.length;
+}
+function hhmm(d){
+  return String(d.getHours()).padStart(2,"0")+":"+String(d.getMinutes()).padStart(2,"0")+":"+String(d.getSeconds()).padStart(2,"0");
+}
+function esc(v){
+  return String(v==null?"":v).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c];});
+}
+
+/* ---------------- planta ---------------- */
+var ROOMS = [
+  {k:"sala", label:"Sala", x:20, y:20, w:320, h:240, slots:[[95,85],[200,85],[290,85],[95,175],[200,175],[290,175]]},
+  {k:"cozinha", label:"Cozinha", x:340, y:20, w:180, h:180, slots:[[390,70],[470,70],[390,140],[470,140]]},
+  {k:"quarto", label:"Quarto", x:520, y:20, w:180, h:180, slots:[[570,70],[650,70],[570,140],[650,140]]},
+  {k:"corredor", label:"Corredor", x:340, y:200, w:360, h:60, slots:[[385,230],[465,230],[545,230],[625,230]]},
+  {k:"entrada", label:"Entrada", x:20, y:260, w:320, h:200, slots:[[80,315],[180,315],[280,315],[80,405],[180,405],[280,405]]},
+  {k:"escritorio", label:"Escritório", x:340, y:260, w:360, h:200, slots:[[400,315],[500,315],[600,315],[400,405],[500,405],[600,405]]}
+];
+function roomOf(k){ for(var i=0;i<ROOMS.length;i++){ if(ROOMS[i].k===k) return ROOMS[i]; } return ROOMS[0]; }
+
+var GLYPH = {
+  luz:'<circle cx="0" cy="-2" r="6"/><path d="M-3 6 h6"/><path d="M-2 9 h4"/>',
+  estore:'<rect x="-7" y="-7" width="14" height="14" rx="1.5"/><path d="M-7 -2 h14"/><path d="M-7 2.5 h14"/>',
+  temp:'<path d="M-2 -8 h4 v9"/><path d="M-2 1 v-9"/><circle cx="0" cy="4" r="4"/>',
+  mov:'<circle cx="-4" cy="0" r="1.6"/><path d="M0 -6 a8 8 0 0 1 0 12"/><path d="M4 -9 a12 12 0 0 1 0 18"/>',
+  fumo:'<circle cx="0" cy="0" r="7.5"/><circle cx="0" cy="0" r="2"/>',
+  tomada:'<rect x="-6.5" y="-6.5" width="13" height="13" rx="2.5"/><circle cx="-2.5" cy="-1" r="1.3"/><circle cx="2.5" cy="-1" r="1.3"/>',
+  fecho:'<rect x="-6" y="-1" width="12" height="9" rx="2"/><path d="M-3.5 -1 v-3.5 a3.5 3.5 0 0 1 7 0 v3.5"/>',
+  camara:'<rect x="-8" y="-4.5" width="12" height="9" rx="2"/><path d="M4 -1.5 l4 -3 v9 l-4 -3"/>',
+  central:'<rect x="-7" y="-7" width="14" height="14" rx="3"/><path d="M-2.5 3 a4 4 0 0 1 5 0"/><path d="M-5 0 a8 8 0 0 1 10 0"/>',
+  porta:'<rect x="-6" y="-8" width="12" height="16" rx="1"/><circle cx="3" cy="1" r="1.3"/>',
+  lux:'<circle cx="0" cy="0" r="4"/><path d="M0 -8.5 v2.5"/><path d="M0 6 v2.5"/><path d="M-8.5 0 h2.5"/><path d="M6 0 h2.5"/>',
+  botao:'<circle cx="0" cy="0" r="7.5"/><circle cx="0" cy="0" r="2.5"/>',
+  aquec:'<path d="M-6 -6 v12"/><path d="M-2 -6 v12"/><path d="M2 -6 v12"/><path d="M6 -6 v12"/>'
+};
+
+var LABELS = {
+  luz:{on:"acesa",off:"apagada"}, estore:{on:"aberto",off:"fechado"},
+  tomada:{on:"a alimentar",off:"cortada"}, fecho:{on:"trancada",off:"destrancada"},
+  aquec:{on:"a aquecer",off:"desligada"}, mov:{on:"presença",off:"sem movimento"},
+  temp:{on:"a pedir calor",off:"em conforto"}, fumo:{on:"em alarme",off:"vigilante"},
+  camara:{on:"a gravar",off:"em espera"}, porta:{on:"aberta",off:"fechada"},
+  lux:{on:"escuro",off:"com luz"}, botao:{on:"premido",off:"em repouso"},
+  central:{on:"ativa",off:"em espera"}
+};
+
+/* ---------------- catálogo ---------------- */
+var CATALOG = [
+  {id:"central", grupo:"Central e comandos", name:"Central com coordenador Zigbee", kind:"central", type:"central",
+   proto:"Zigbee + rede local", unico:true, desc:"Guarda as regras e decide. Sem esta peça não existem automações."},
+  {id:"botao", grupo:"Central e comandos", name:"Botão sem fios", kind:"interface", type:"botao",
+   proto:"Sonoff SNZB-01 (Zigbee)", desc:"Comando manual que invoca cenas sem depender do telemóvel."},
+
+  {id:"mov", grupo:"Sensores", name:"Sensor de movimento", kind:"sensor", type:"mov",
+   proto:"Sonoff SNZB-03 (Zigbee)", desc:"Deteta presença por infravermelhos."},
+  {id:"temp", grupo:"Sensores", name:"Sensor de temperatura e humidade", kind:"sensor", type:"temp",
+   proto:"Sonoff SNZB-02 (Zigbee)", desc:"Mede temperatura e humidade da divisão."},
+  {id:"porta", grupo:"Sensores", name:"Contacto de porta ou janela", kind:"sensor", type:"porta",
+   proto:"Sonoff SNZB-04 (Zigbee)", desc:"Assinala abertura e fecho."},
+  {id:"lux", grupo:"Sensores", name:"Sensor de luminosidade", kind:"sensor", type:"lux",
+   proto:"Zigbee", desc:"Mede a luz disponível e evita acender de dia."},
+  {id:"fumo", grupo:"Sensores", name:"Detetor de fumo", kind:"sensor", type:"fumo",
+   proto:"detetor autónomo com módulo Zigbee", desc:"Sirene e bateria próprias; dispara mesmo com o sistema em baixo."},
+  {id:"camara", grupo:"Sensores", name:"Câmara de exterior", kind:"sensor", type:"camara",
+   proto:"Wi-Fi (RTSP local)", desc:"Gravação local, apenas com deteção de pessoas."},
+
+  {id:"luz", grupo:"Atuadores", name:"Módulo de iluminação", kind:"atuador", type:"luz",
+   proto:"Sonoff ZBMini (Zigbee)", desc:"Liga e desliga um circuito de luz já existente."},
+  {id:"dim", grupo:"Atuadores", name:"Módulo regulador de fluxo", kind:"atuador", type:"luz",
+   proto:"Shelly Dimmer (Wi-Fi)", desc:"Permite acender a uma percentagem, útil de madrugada."},
+  {id:"estore", grupo:"Atuadores", name:"Módulo de estore", kind:"atuador", type:"estore",
+   proto:"Shelly 2PM (Wi-Fi)", desc:"Comanda o motor e conhece a posição em percentagem."},
+  {id:"tomada", grupo:"Atuadores", name:"Tomada inteligente com medição", kind:"atuador", type:"tomada",
+   proto:"Shelly Plug S (Wi-Fi)", desc:"Liga, desliga e mede o consumo do que estiver ligado."},
+  {id:"aquec", grupo:"Atuadores", name:"Válvula termostática de radiador", kind:"atuador", type:"aquec",
+   proto:"Zigbee (TRV)", desc:"Regula o aquecimento divisão a divisão."},
+  {id:"fecho", grupo:"Atuadores", name:"Fechadura elétrica", kind:"atuador", type:"fecho",
+   proto:"Zigbee", desc:"Tranca e destranca. Em emergência tem de destrancar."}
+];
+function cat(id){ for(var i=0;i<CATALOG.length;i++){ if(CATALOG[i].id===id) return CATALOG[i]; } return null; }
+
+/* ---------------- estado do sistema ---------------- */
+var installed = [];
+var uidSeq = 0;
+var instances = [];
+var selected = null;
+
+function hubItem(){ for(var i=0;i<installed.length;i++){ if(installed[i].cat.id==="central") return installed[i]; } return null; }
+function hubPos(){ var h = hubItem(); return h ? {x:h.x, y:h.y} : {x:520, y:230}; }
+function actuators(){ return installed.filter(function(i){ return i.cat.kind==="atuador"; }); }
+function byUid(u){ for(var i=0;i<installed.length;i++){ if(installed[i].uid===u) return installed[i]; } return null; }
+
+function freeSlot(roomKey){
+  var r = roomOf(roomKey);
+  for(var i=0;i<r.slots.length;i++){
+    var s = r.slots[i], taken = false;
+    installed.forEach(function(it){ if(it.x===s[0] && it.y===s[1]) taken = true; });
+    if(!taken) return s;
+  }
+  return null;
+}
+
+function addDevice(catId, roomKey){
+  var c = cat(catId);
+  if(c.unico && installed.some(function(i){ return i.cat.id===catId; })){
+    montarMsg("Já existe uma central instalada. Uma casa só precisa de uma.", true); return;
+  }
+  var slot = freeSlot(roomKey);
+  if(!slot){ montarMsg("A divisão escolhida está cheia. Instale noutra divisão.", true); return; }
+  var r = roomOf(roomKey);
+  var it = {uid:"d"+(++uidSeq), cat:c, room:roomKey, place:r.label, x:slot[0], y:slot[1], on:false};
+  it.label = c.name + " · " + r.label;
+  installed.push(it);
+  rebuildPlans(); refreshAll();
+  montarMsg("Instalado: " + it.label + ".");
+  log("montagem", "Instalou " + c.name + " (" + c.proto + ") em: " + r.label);
+}
+
+function removeDevice(uid){
+  var it = byUid(uid); if(!it) return;
+  installed = installed.filter(function(i){ return i.uid!==uid; });
+  if(selected===uid) selected = null;
+  rebuildPlans(); refreshAll();
+  montarMsg("Removido: " + it.label + ".");
+  log("montagem", "Removeu " + it.label);
+}
+
+function montarMsg(txt, warn){
+  var el = document.getElementById("montarOut");
+  el.classList.toggle("warn", !!warn);
+  el.innerHTML = warn ? "<b>" + txt + "</b>" : txt;
+}
+
+/* ---------------- desenho das plantas ---------------- */
+function makePlan(host, opts){
+  var gid = "lamp-" + opts.id;
+  var svg = document.createElementNS(NS,"svg");
+  svg.setAttribute("viewBox","0 0 720 480");
+  svg.setAttribute("role","img");
+  svg.setAttribute("aria-label", opts.label);
+  if(!opts.interactive) svg.classList.add("readonly");
+  var m = '<defs><radialGradient id="'+gid+'" cx="50%" cy="45%" r="72%">' +
+          '<stop offset="0%" stop-color="#FFC061" stop-opacity=".26"/>' +
+          '<stop offset="100%" stop-color="#FFC061" stop-opacity="0"/></radialGradient></defs><g>';
+  ROOMS.forEach(function(r){ m += '<rect class="room" x="'+r.x+'" y="'+r.y+'" width="'+r.w+'" height="'+r.h+'" rx="4"/>'; });
+  ROOMS.forEach(function(r){ m += '<rect class="roomGlow" data-room="'+r.k+'" x="'+r.x+'" y="'+r.y+'" width="'+r.w+'" height="'+r.h+'" fill="url(#'+gid+')"/>'; });
+  ROOMS.forEach(function(r){ m += '<text class="rname" x="'+(r.x+14)+'" y="'+(r.y+22)+'">'+r.label.toUpperCase()+'</text>'; });
+  m += '</g><g class="links"></g><g class="fx"></g><g class="devs"></g>' +
+       '<text class="emptyplan" x="360" y="248" text-anchor="middle">SEM EQUIPAMENTO INSTALADO</text>';
+  svg.innerHTML = m;
+  host.appendChild(svg);
+  var inst = {svg:svg, interactive:!!opts.interactive, links:svg.querySelector(".links"),
+              fx:svg.querySelector(".fx"), devs:svg.querySelector(".devs"),
+              hint:svg.querySelector(".emptyplan"), glows:svg.querySelectorAll(".roomGlow"), nodes:{}};
+  instances.push(inst);
+  return inst;
+}
+
+function rebuildPlans(){
+  var hp = hubPos();
+  instances.forEach(function(inst){
+    inst.links.innerHTML = ""; inst.devs.innerHTML = ""; inst.nodes = {};
+    inst.hint.style.display = installed.length ? "none" : "";
+    installed.forEach(function(it){
+      if(it.cat.id !== "central"){
+        var l = document.createElementNS(NS,"path");
+        l.setAttribute("class","link-radio");
+        l.setAttribute("d","M"+it.x+" "+it.y+" L"+hp.x+" "+hp.y);
+        inst.links.appendChild(l);
+      }
+      var g = document.createElementNS(NS,"g");
+      g.setAttribute("class","dev " + (it.cat.kind==="sensor" ? "sensor" : it.cat.kind==="central" ? "central" : "atuador") + (it.on ? " on" : ""));
+      g.setAttribute("transform","translate("+it.x+","+it.y+")");
+      g.innerHTML = '<circle class="halo" r="19"/><circle class="body" r="13"/><g class="gl">'+GLYPH[it.cat.type]+'</g>';
+      if(inst.interactive){
+        g.setAttribute("tabindex","0"); g.setAttribute("role","button"); g.setAttribute("aria-label", it.label);
+        var pick = function(){ selected = it.uid; renderInstalled(); };
+        g.addEventListener("click", pick);
+        g.addEventListener("keydown", function(e){ if(e.key==="Enter"||e.key===" "){ e.preventDefault(); pick(); } });
+      }
+      if(selected===it.uid) g.classList.add("sel");
+      inst.devs.appendChild(g);
+      inst.nodes[it.uid] = g;
+    });
+  });
+  paintRooms();
+  document.getElementById("planCount").textContent = installed.length + (installed.length===1 ? " equipamento" : " equipamentos");
+  document.getElementById("heroCount").textContent = installed.length ? installed.length + " instalados" : "por equipar";
+}
+
+function setState(uid, on, alarm){
+  var it = byUid(uid); if(!it) return;
+  it.on = !!on;
+  instances.forEach(function(inst){
+    var n = inst.nodes[uid]; if(!n) return;
+    n.classList.toggle("on", !!on);
+    n.classList.toggle("alarm", !!alarm);
+  });
+  paintRooms();
+}
+
+function paintRooms(){
+  var lit = {};
+  installed.forEach(function(it){ if(it.cat.type==="luz" && it.on) lit[it.room] = true; });
+  instances.forEach(function(inst){
+    Array.prototype.forEach.call(inst.glows, function(r){ r.classList.toggle("lit", !!lit[r.dataset.room]); });
+  });
+}
+
+function flash(uid){
+  instances.forEach(function(inst){
+    var n = inst.nodes[uid]; if(!n) return;
+    n.classList.add("trig");
+    setTimeout(function(){ n.classList.remove("trig"); }, 1700);
+  });
+}
+
+function sendSignal(fromUid, toUid, colour, done){
+  var a = byUid(fromUid), b = byUid(toUid), hp = hubPos();
+  if(reduce || !a || !b){ if(done) done(); return; }
+  var finished = false;
+  instances.forEach(function(inst){
+    var p = document.createElementNS(NS,"path");
+    p.setAttribute("fill","none"); p.setAttribute("stroke","none");
+    p.setAttribute("d","M"+a.x+" "+a.y+" L"+hp.x+" "+hp.y+" L"+b.x+" "+b.y);
+    inst.fx.appendChild(p);
+    var dot = document.createElementNS(NS,"circle");
+    dot.setAttribute("r","4.5"); dot.setAttribute("fill","#63E6C8");
+    inst.fx.appendChild(dot);
+    var len = p.getTotalLength(), t0 = null, dur = 780;
+    function step(ts){
+      if(!t0) t0 = ts;
+      var t = Math.min((ts-t0)/dur, 1);
+      var pt = p.getPointAtLength(len*t);
+      dot.setAttribute("cx", pt.x); dot.setAttribute("cy", pt.y);
+      dot.setAttribute("fill", t < .5 ? "#63E6C8" : (colour || "#FFC061"));
+      if(t < 1) requestAnimationFrame(step);
+      else { inst.fx.removeChild(dot); inst.fx.removeChild(p); if(!finished){ finished = true; if(done) done(); } }
+    }
+    requestAnimationFrame(step);
+  });
+}
+
+makePlan(document.getElementById("planHero"), {id:"a", label:"Planta da habitação"});
+makePlan(document.getElementById("planMontar"), {id:"b", interactive:true, label:"Planta com o equipamento instalado"});
+makePlan(document.getElementById("planAuto"), {id:"c", label:"Planta durante a execução da automação"});
+makePlan(document.getElementById("planCenas"), {id:"d", label:"Planta durante a pré-visualização da cena"});
+
+/* ---------------- módulo 03: catálogo ---------------- */
+var catBox = document.getElementById("catalog");
+var grupos = [];
+CATALOG.forEach(function(c){ if(grupos.indexOf(c.grupo) < 0) grupos.push(c.grupo); });
+grupos.forEach(function(g){
+  var h = document.createElement("p"); h.className = "grouph"; h.textContent = g.toUpperCase();
+  catBox.appendChild(h);
+  CATALOG.filter(function(c){ return c.grupo===g; }).forEach(function(c){
+    var row = document.createElement("div"); row.className = "catrow";
+    var opts = ROOMS.map(function(r){ return '<option value="'+r.k+'">'+r.label+'</option>'; }).join("");
+    row.innerHTML = '<span class="n"><b>'+c.name+'</b><span>'+c.proto+'</span></span>' +
+      '<select class="mini" aria-label="Divisão para '+c.name+'">'+opts+'</select>' +
+      '<button class="add" type="button">instalar</button>';
+    row.querySelector("button").addEventListener("click", function(){
+      addDevice(c.id, row.querySelector("select").value);
+    });
+    catBox.appendChild(row);
+  });
+});
+
+function renderInstalled(){
+  var ul = document.getElementById("installedList");
+  ul.innerHTML = "";
+  if(!installed.length){
+    ul.innerHTML = '<li class="empty">A habitação está vazia.</li>';
+  } else {
+    installed.forEach(function(it){
+      var li = document.createElement("li");
+      li.innerHTML = '<span class="who">' + esc(it.cat.name) +
+        '<em>' + esc(it.place) + " · " + esc(it.cat.proto) + " · " + it.cat.kind + '</em></span>' +
+        '<button class="del" type="button" aria-label="Remover ' + esc(it.label) + '">remover</button>';
+      if(selected===it.uid) li.style.background = "rgba(255,192,97,.06)";
+      li.querySelector(".del").addEventListener("click", function(){ removeDevice(it.uid); });
+      ul.appendChild(li);
+    });
+  }
+  instances.forEach(function(inst){
+    for(var u in inst.nodes) inst.nodes[u].classList.toggle("sel", u===selected);
+  });
+  renderDiag();
+}
+
+function renderDiag(){
+  var d = document.getElementById("diag");
+  var out = [];
+  var nSens = installed.filter(function(i){ return i.cat.kind==="sensor"; }).length;
+  var nAtu = actuators().length;
+  var wifi = installed.filter(function(i){ return i.cat.proto.indexOf("Wi-Fi") >= 0; }).length;
+  var zig = installed.filter(function(i){ return i.cat.proto.indexOf("Zigbee") >= 0; }).length;
+
+  out.push(hubItem()
+    ? {c:"ok", i:"✓", t:"Central instalada: as automações podem correr localmente."}
+    : {c:"no", i:"!", t:"Sem central instalada não há automações possíveis."});
+  out.push(nAtu
+    ? {c:"ok", i:"✓", t:nAtu + (nAtu===1?" atuador instalado.":" atuadores instalados.")}
+    : {c:"no", i:"!", t:"Sem atuadores a casa mede tudo e não faz nada."});
+  out.push(nSens
+    ? {c:"ok", i:"✓", t:nSens + (nSens===1?" sensor instalado.":" sensores instalados.")}
+    : {c:"tip", i:"·", t:"Sem sensores só existem cenas manuais, nunca automações."});
+  if(wifi > 6) out.push({c:"tip", i:"·", t:wifi + " equipamentos em Wi-Fi. Acima de meia dúzia convém passar parte para Zigbee."});
+  if(zig && !hubItem()) out.push({c:"no", i:"!", t:"Há equipamento Zigbee sem coordenador: não comunica com ninguém."});
+  if(!installed.some(function(i){ return i.cat.id==="fumo"; }) && installed.length > 3)
+    out.push({c:"tip", i:"·", t:"Não existe deteção de fumo na instalação."});
+  if(!installed.some(function(i){ return i.cat.id==="botao"; }) && nAtu > 2)
+    out.push({c:"tip", i:"·", t:"Nenhum comando manual previsto além da aplicação."});
+
+  d.innerHTML = out.map(function(o){
+    return '<div class="'+o.c+'"><span class="ic">'+o.i+'</span><span>'+esc(o.t)+'</span></div>';
+  }).join("");
+}
+
+/* ---------------- módulo 04: automações ---------------- */
+var selT = document.getElementById("trigger"), selC = document.getElementById("cond"), selA = document.getElementById("action");
+var rules = [];
+
+var CONDS = [
+  {t:"(sem condição adicional)", c:null},
+  {t:"estiver escuro no exterior", c:"luminosidade < 50 lux"},
+  {t:"forem depois das 23h00", c:"hora entre 23:00 e 07:00"},
+  {t:"não houver ninguém em casa", c:"presenca.casa == falso"},
+  {t:"o consumo estiver acima de 3 kW", c:"consumo.total > 3 kW"}
+];
+
+function slug(it){ return it.cat.id + "." + it.room; }
+
+function triggerOptions(){
+  var t = [];
+  installed.forEach(function(it){
+    var id = it.cat.id, p = it.place;
+    if(id==="mov")    t.push({t:"houver movimento na " + p, c:"movimento." + it.room + " == verdadeiro", uid:it.uid, nota:"Sem uma segunda condição, esta regra dispara também a meio da tarde."});
+    if(id==="temp")   t.push({t:"a temperatura na " + p + " descer abaixo de 19 °C", c:slug(it) + " < 19 °C", uid:it.uid, nota:"Convém definir uma margem de retorno, ou o aquecimento arranca e para sucessivamente."});
+    if(id==="porta")  t.push({t:"a porta ou janela na " + p + " abrir", c:"contacto." + it.room + " == aberto", uid:it.uid, nota:"Muito usado para cortar o aquecimento enquanto a janela está aberta."});
+    if(id==="lux")    t.push({t:"a luminosidade na " + p + " descer abaixo de 50 lux", c:"lux." + it.room + " < 50", uid:it.uid, nota:"Um sensor de luz evita as automações que acendem lâmpadas em pleno dia."});
+    if(id==="fumo")   t.push({t:"o detetor de fumo na " + p + " disparar", c:"fumo." + it.room + " == verdadeiro", uid:it.uid, nota:"As regras de emergência têm prioridade máxima e não podem depender da internet."});
+    if(id==="camara") t.push({t:"a câmara detetar uma pessoa", c:"camara.pessoa == verdadeiro", uid:it.uid, nota:"A deteção deve filtrar pessoas e não movimento, sob pena de alertas constantes."});
+    if(id==="botao")  t.push({t:"o botão na " + p + " for premido", c:"botao." + it.room + ".click", uid:it.uid, nota:"Um botão não é um sensor: quem decide o momento é a pessoa."});
+  });
+  t.push({t:"o sol nascer", c:"hora == nascer_do_sol", uid:null, nota:"Não intervém qualquer sensor: o gatilho vem do relógio e do calendário da central."});
+  t.push({t:"forem 23h00", c:"hora == 23:00", uid:null, nota:"Gatilhos horários são os únicos que funcionam sem sensores instalados."});
+  return t;
+}
+
+function actionOptions(){
+  var a = [];
+  actuators().forEach(function(it){
+    var id = it.cat.id, p = it.place, u = it.uid;
+    if(id==="luz")    { a.push({t:"acender a luz da " + p, c:"luz." + it.room + " = ligado", apply:[{uid:u,on:true}]});
+                        a.push({t:"apagar a luz da " + p, c:"luz." + it.room + " = desligado", apply:[{uid:u,on:false}]}); }
+    if(id==="dim")    { a.push({t:"acender a luz da " + p + " a 20%", c:"luz." + it.room + ".brilho = 20%", apply:[{uid:u,on:true}]});
+                        a.push({t:"apagar a luz regulada da " + p, c:"luz." + it.room + ".brilho = 0%", apply:[{uid:u,on:false}]}); }
+    if(id==="estore") { a.push({t:"abrir o estore da " + p, c:"estore." + it.room + " = aberto", apply:[{uid:u,on:true}]});
+                        a.push({t:"fechar o estore da " + p, c:"estore." + it.room + " = fechado", apply:[{uid:u,on:false}]}); }
+    if(id==="tomada") { a.push({t:"ligar a tomada da " + p, c:"tomada." + it.room + " = ligada", apply:[{uid:u,on:true}]});
+                        a.push({t:"cortar a tomada da " + p, c:"tomada." + it.room + " = cortada", apply:[{uid:u,on:false}]}); }
+    if(id==="aquec")  { a.push({t:"ligar o aquecimento na " + p + " até aos 21 °C", c:"aquecimento." + it.room + ".alvo = 21 °C", apply:[{uid:u,on:true}]});
+                        a.push({t:"desligar o aquecimento na " + p, c:"aquecimento." + it.room + " = desligado", apply:[{uid:u,on:false}]}); }
+    if(id==="fecho")  { a.push({t:"trancar a porta", c:"fechadura = trancada", apply:[{uid:u,on:true}]});
+                        a.push({t:"destrancar a porta", c:"fechadura = aberta", apply:[{uid:u,on:false}]}); }
+  });
+  scenes.forEach(function(sc){
+    a.push({t:"aplicar a cena «" + sc.name + "»", c:'aplicar_cena("' + sc.name + '")', apply:sc.states.slice(), cena:sc.name});
+  });
+  a.push({t:"enviar uma notificação ao telemóvel", c:"notificar(utilizador)", apply:[]});
+  return a;
+}
+
+var trigs = [], acts = [];
+function fillSelect(sel, arr, empty){
+  var keep = sel.value;
+  sel.innerHTML = "";
+  if(!arr.length){
+    var o = document.createElement("option"); o.textContent = empty; o.value = ""; sel.appendChild(o);
+    sel.disabled = true; return;
+  }
+  sel.disabled = false;
+  arr.forEach(function(x, i){
+    var o = document.createElement("option"); o.value = i; o.textContent = x.t; sel.appendChild(o);
+  });
+  if(keep !== "" && +keep < arr.length) sel.value = keep;
+}
+
+function refreshBuilders(){
+  trigs = triggerOptions(); acts = actionOptions();
+  fillSelect(selT, trigs, "instale equipamento no módulo 03");
+  fillSelect(selA, acts, "instale atuadores no módulo 03");
+  if(!selC.options.length){
+    CONDS.forEach(function(c, i){ var o = document.createElement("option"); o.value = i; o.textContent = c.t; selC.appendChild(o); });
+  }
+  var pronto = trigs.length && acts.length;
+  document.getElementById("testRule").disabled = !pronto;
+  document.getElementById("saveRule").disabled = !pronto;
+  renderRule();
+}
+
+function currentRule(){
+  if(!trigs.length || !acts.length) return null;
+  return {t:trigs[+selT.value || 0], c:CONDS[+selC.value || 0], a:acts[+selA.value || 0]};
+}
+
+function renderRule(){
+  var r = currentRule();
+  var pre = document.getElementById("pseudo"), nota = document.getElementById("ruleNote");
+  if(!r){
+    pre.innerHTML = '<span class="k">quando</span>  —\n<span class="a">então</span>   —';
+    nota.textContent = "Sem equipamento instalado não há automações a construir. Volte ao módulo 03.";
+    return;
+  }
+  pre.innerHTML = '<span class="k">quando</span>  ' + r.t.c +
+    (r.c.c ? '\n<span class="k">e</span>       ' + r.c.c : '') +
+    '\n<span class="a">então</span>   ' + r.a.c;
+  nota.textContent = r.t.nota || "";
+}
+selT.addEventListener("change", renderRule);
+selC.addEventListener("change", renderRule);
+selA.addEventListener("change", renderRule);
+
+function ruleText(r){
+  return "Se " + r.t.t + (r.c.c ? " e " + r.c.t : "") + ", então " + r.a.t;
+}
+
+function runRule(r, silent){
+  var out = document.getElementById("autoOut");
+  if(!hubItem()){
+    out.classList.add("warn");
+    out.innerHTML = "<b>Não existe central instalada: a automação não pode correr.</b>";
+    return;
+  }
+  out.classList.remove("warn");
+  var src = r.t.uid || hubItem().uid;
+  if(r.t.uid){ flash(r.t.uid); setState(r.t.uid, true, r.t.c.indexOf("fumo") === 0); }
+  var alvo = r.a.apply.length ? r.a.apply[0].uid : hubItem().uid;
+  out.innerHTML = "sinal: " + esc(r.t.uid ? byUid(r.t.uid).cat.name : "relógio da central") + " → central …";
+  sendSignal(src, alvo, "#FFC061", function(){
+    r.a.apply.forEach(function(st, i){ setTimeout(function(){ setState(st.uid, st.on, false); }, reduce?0:80*i); });
+    out.innerHTML = "executada → <b>" + esc(r.a.t) + "</b>";
+  });
+  if(reduce) r.a.apply.forEach(function(st){ setState(st.uid, st.on, false); });
+  setTimeout(function(){ if(r.t.uid) setState(r.t.uid, false, false); }, reduce?0:2600);
+  if(!silent) log("automacao", "Testou: " + ruleText(r));
+}
+
+document.getElementById("testRule").addEventListener("click", function(){
+  var r = currentRule(); if(r) runRule(r);
+});
+
+document.getElementById("saveRule").addEventListener("click", function(){
+  var r = currentRule(); if(!r) return;
+  rules.push({t:r.t, c:r.c, a:r.a, txt:ruleText(r)});
+  renderRules();
+  log("automacao", "Guardou a automação: " + ruleText(r));
+  document.getElementById("autoOut").innerHTML = "automação guardada → <b>" + esc(ruleText(r)) + "</b>";
+});
+
+function renderRules(){
+  var ul = document.getElementById("ruleList");
+  ul.innerHTML = "";
+  if(!rules.length){ ul.innerHTML = '<li class="empty">Ainda não há automações guardadas.</li>'; return; }
+  rules.forEach(function(r, i){
+    var li = document.createElement("li");
+    li.innerHTML = '<span class="who">' + esc(r.txt) + '</span>' +
+      '<button class="mini-run" type="button">testar</button>' +
+      '<button class="del" type="button" aria-label="Eliminar automação">remover</button>';
+    li.querySelector(".mini-run").addEventListener("click", function(){
+      runRule(r, true);
+      log("automacao", "Executou a automação guardada: " + r.txt);
+    });
+    li.querySelector(".del").addEventListener("click", function(){
+      log("automacao", "Eliminou a automação: " + r.txt);
+      rules.splice(i,1); renderRules();
+    });
+    ul.appendChild(li);
+  });
+}
+
+/* ---------------- módulo 05: cenas ---------------- */
+var scenes = [];
+var draft = {};
+var compList = document.getElementById("composerList");
+var sceneOut = document.getElementById("sceneOut");
+
+["Modo noite","Modo verão","Modo inverno","Modo ausente","Modo cinema","Bom dia"].forEach(function(n){
+  var b = document.createElement("button");
+  b.type = "button"; b.className = "namechip"; b.textContent = n;
+  b.addEventListener("click", function(){ document.getElementById("sceneName").value = n; });
+  document.getElementById("nameChips").appendChild(b);
+});
+
+function renderComposer(){
+  compList.innerHTML = "";
+  var list = actuators();
+  if(!list.length){
+    compList.innerHTML = '<p class="empty">Não há atuadores instalados. Uma cena precisa de equipamento que atue: volte ao módulo 03.</p>';
+    return;
+  }
+  list.forEach(function(it){
+    if(!(it.uid in draft)) draft[it.uid] = "skip";
+    var lab = LABELS[it.cat.type] || {on:"ligado", off:"desligado"};
+    var row = document.createElement("div");
+    row.className = "devrow";
+    row.innerHTML = '<span class="dn">' + esc(it.cat.name) + ' <span class="muted">· ' + esc(it.place) + '</span></span>' +
+      '<div class="seg" data-uid="' + it.uid + '" role="group" aria-label="' + esc(it.label) + '">' +
+        '<button type="button" data-v="on">' + lab.on + '</button>' +
+        '<button type="button" data-v="off">' + lab.off + '</button>' +
+        '<button type="button" data-v="skip">manter</button></div>';
+    compList.appendChild(row);
+    markSeg(it.uid);
+  });
+}
+
+function markSeg(uid){
+  var seg = compList.querySelector('.seg[data-uid="' + uid + '"]');
+  if(!seg) return;
+  Array.prototype.forEach.call(seg.children, function(c){ c.classList.toggle("sel", c.dataset.v === draft[uid]); });
+}
+
+compList.addEventListener("click", function(e){
+  var b = e.target.closest ? e.target.closest("button[data-v]") : null;
+  if(!b) return;
+  var uid = b.parentNode.dataset.uid;
+  draft[uid] = b.dataset.v;
+  markSeg(uid); sceneReport();
+});
+
+function defined(){ return actuators().filter(function(it){ return draft[it.uid] && draft[it.uid] !== "skip"; }); }
+
+function sceneReport(extra){
+  var n = defined().length, total = actuators().length;
+  var base = n === 0 ? "Nenhum equipamento definido." :
+    n + (n===1 ? " equipamento definido, " : " equipamentos definidos, ") + (total-n) + " por manter.";
+  sceneOut.innerHTML = extra ? base + " <b>" + esc(extra) + "</b>" : base;
+}
+
+function applyStates(states){
+  states.forEach(function(st, i){ setTimeout(function(){ setState(st.uid, st.on, false); }, reduce?0:80*i); });
+}
+
+document.getElementById("preview").addEventListener("click", function(){
+  var st = defined().map(function(it){ return {uid:it.uid, on:draft[it.uid]==="on"}; });
+  if(!st.length){ sceneReport("Defina pelo menos um equipamento."); return; }
+  applyStates(st);
+  log("cena", "Pré-visualizou um rascunho com " + st.length + " equipamentos");
+  sceneReport("Rascunho aplicado à casa.");
+});
+
+document.getElementById("capture").addEventListener("click", function(){
+  actuators().forEach(function(it){ draft[it.uid] = it.on ? "on" : "off"; markSeg(it.uid); });
+  log("cena", "Copiou o estado atual da casa para o rascunho");
+  sceneReport("Estado atual copiado.");
+});
+
+document.getElementById("clearDraft").addEventListener("click", function(){
+  actuators().forEach(function(it){ draft[it.uid] = "skip"; markSeg(it.uid); });
+  sceneReport();
+});
+
+document.getElementById("saveScene").addEventListener("click", function(){
+  var input = document.getElementById("sceneName");
+  var name = (input.value || "").trim();
+  var states = defined().map(function(it){ return {uid:it.uid, on:draft[it.uid]==="on"}; });
+  if(!states.length){ sceneReport("Uma cena precisa de, pelo menos, um equipamento definido."); return; }
+  if(!name){ sceneReport("Falta atribuir um nome à cena."); input.focus(); return; }
+  scenes.push({name:name, states:states});
+  input.value = "";
+  renderScenes(); refreshBuilders();
+  log("cena", "Criou a cena «" + name + "» com " + states.length + " equipamentos definidos");
+  sceneReport("Cena «" + name + "» guardada e disponível como ação no módulo 04.");
+});
+
+function renderScenes(){
+  var box = document.getElementById("savedScenes");
+  box.innerHTML = "";
+  if(!scenes.length){ box.innerHTML = '<p class="empty">Ainda não há cenas guardadas.</p>'; return; }
+  scenes.forEach(function(sc, i){
+    var chip = document.createElement("div");
+    chip.className = "scene-chip";
+    chip.innerHTML = '<button type="button" class="apply">' + esc(sc.name) + '</button>' +
+                     '<button type="button" class="del" aria-label="Eliminar a cena ' + esc(sc.name) + '">×</button>';
+    chip.querySelector(".apply").addEventListener("click", function(){
+      applyStates(sc.states);
+      log("cena", "Aplicou a cena «" + sc.name + "»");
+      sceneReport("Cena «" + sc.name + "» aplicada: " + sc.states.length + " equipamentos comandados de uma só vez.");
+    });
+    chip.querySelector(".del").addEventListener("click", function(){
+      log("cena", "Eliminou a cena «" + sc.name + "»");
+      scenes.splice(i,1); renderScenes(); refreshBuilders();
+    });
+    box.appendChild(chip);
+  });
+}
+
+/* ---------------- atualização global ---------------- */
+function refreshAll(){
+  renderInstalled();
+  renderComposer();
+  sceneReport();
+  refreshBuilders();
+}
+
+/* ---------------- relógio ---------------- */
+function tick(){
+  var n = new Date();
+  document.getElementById("clock").textContent = String(n.getHours()).padStart(2,"0") + ":" + String(n.getMinutes()).padStart(2,"0");
+}
+tick(); setInterval(tick, 30000);
+
+/* ---------------- módulo 08: relatório ---------------- */
+var CATN = {montagem:"montagem", automacao:"automação", cena:"cena", relatorio:"relatório"};
+
+function reportInner(){
+  var nome = document.getElementById("stName").value.trim() || "(sem identificação)";
+  var turma = document.getElementById("stClass").value.trim() || "—";
+  var notas = document.getElementById("stNotes").value.trim();
+  var agora = new Date();
+  var mins = Math.max(1, Math.round((agora - startedAt)/60000));
+  var zig = installed.filter(function(i){ return i.cat.proto.indexOf("Zigbee") >= 0; }).length;
+  var wifi = installed.filter(function(i){ return i.cat.proto.indexOf("Wi-Fi") >= 0; }).length;
+
+  var h = '<div class="rep-head"><h3>Relatório de atividade</h3>' +
+    '<p class="rep-sub">UFCD 6091 · Domótica - generalidades</p>' +
+    '<p class="rep-meta">Formando: ' + esc(nome) + '<br>Turma: ' + esc(turma) +
+    '<br>Data: ' + agora.toLocaleDateString("pt-PT") +
+    '<br>Sessão: ' + hhmm(startedAt) + ' às ' + hhmm(agora) + ' (' + mins + ' min)</p></div>';
+
+  h += '<div class="stats">' +
+    '<div class="stat"><b>' + installed.length + '</b><span>equipamentos instalados</span></div>' +
+    '<div class="stat"><b>' + rules.length + '</b><span>automações construídas</span></div>' +
+    '<div class="stat"><b>' + scenes.length + '</b><span>cenas criadas</span></div>' +
+    '<div class="stat"><b>' + zig + " / " + wifi + '</b><span>Zigbee / Wi-Fi</span></div>' +
+    '<div class="stat"><b>' + journal.length + '</b><span>ações registadas</span></div>' +
+    '</div>';
+
+  h += '<p class="rep-h">Sistema montado</p><ul class="rep-list">';
+  if(!installed.length){
+    h += '<li>Não foi instalado qualquer equipamento.</li>';
+  } else {
+    ROOMS.forEach(function(r){
+      var na = installed.filter(function(i){ return i.room===r.k; });
+      if(!na.length) return;
+      h += '<li><b>' + r.label + '</b> — ' + na.length + '<br><em>' +
+           esc(na.map(function(i){ return i.cat.name + " (" + i.cat.proto + ")"; }).join(" · ")) + '</em></li>';
+    });
+    h += '<li><em>diagnóstico</em>' + (hubItem() ? "Central instalada." : "Sem central: o sistema não executa automações.") + '</li>';
+  }
+  h += '</ul>';
+
+  h += '<p class="rep-h">Automações construídas</p><ul class="rep-list">';
+  if(!rules.length) h += '<li>Nenhuma automação foi guardada.</li>';
+  else rules.forEach(function(r, i){
+    h += '<li><b>' + (i+1) + '.</b> ' + esc(r.txt) + '<br><em>' +
+         esc(r.t.c + (r.c.c ? " e " + r.c.c : "") + " → " + r.a.c) + '</em></li>';
+  });
+  h += '</ul>';
+
+  h += '<p class="rep-h">Cenas criadas</p><ul class="rep-list">';
+  if(!scenes.length) h += '<li>Nenhuma cena foi criada.</li>';
+  else scenes.forEach(function(sc){
+    var det = sc.states.map(function(st){
+      var it = byUid(st.uid); if(!it) return "";
+      var lb = LABELS[it.cat.type] || {on:"ligado", off:"desligado"};
+      return it.cat.name + " (" + it.place + "): " + (st.on ? lb.on : lb.off);
+    }).filter(Boolean).join(" · ");
+    h += '<li><b>' + esc(sc.name) + '</b> — ' + sc.states.length + ' equipamentos<br><em>' + esc(det) + '</em></li>';
+  });
+  h += '</ul>';
+
+  h += '<p class="rep-h">Registo cronológico</p><ul class="rep-list">';
+  if(!journal.length) h += '<li>Sem atividade registada.</li>';
+  else journal.forEach(function(e){
+    h += '<li><em>' + hhmm(e.ts) + ' · ' + (CATN[e.cat] || e.cat) + '</em>' + esc(e.txt) + '</li>';
+  });
+  h += '</ul>';
+
+  if(notas) h += '<p class="rep-h">Observações do formando</p><p class="rep-note">' + esc(notas) + '</p>';
+
+  h += '<p class="rep-foot"><b>UFCD 6091 — Domótica - generalidades</b><br>' +
+       'Formador: Eng. Rui Loureiro<br>Documento gerado em ' + agora.toLocaleString("pt-PT") + '.</p>';
+  return h;
+}
+
+function gerar(){
+  var box = document.getElementById("reportBody");
+  box.innerHTML = reportInner();
+  return box;
+}
+
+document.getElementById("genReport").addEventListener("click", function(){
+  log("relatorio", "Gerou o relatório da sessão");
+  gerar().scrollIntoView({behavior: reduce ? "auto" : "smooth", block:"start"});
+});
+
+document.getElementById("printReport").addEventListener("click", function(){
+  gerar(); setTimeout(function(){ window.print(); }, 60);
+});
+
+document.getElementById("dlReport").addEventListener("click", function(){
+  gerar();
+  var css = "body{font:15px/1.65 'Helvetica Neue',Arial,sans-serif;color:#1a1a1a;max-width:760px;margin:40px auto;padding:0 24px}" +
+    ".rep-head{border-top:3px solid #C08A2E;padding-top:18px}.rep-head h3{font-size:1.5rem;margin:0}" +
+    ".rep-sub{font-family:ui-monospace,Menlo,monospace;font-size:12.5px;color:#00655A;margin:6px 0 0}" +
+    ".rep-meta{font-family:ui-monospace,Menlo,monospace;font-size:12.5px;color:#555;line-height:1.9}" +
+    ".stats{display:flex;flex-wrap:wrap;border:1px solid #ddd;border-radius:10px;margin-top:24px}" +
+    ".stat{flex:1 1 130px;padding:14px 16px;border-left:1px solid #eee}.stat:first-child{border-left:0}" +
+    ".stat b{display:block;font-size:1.6rem;color:#9A6A12}.stat span{font-size:12px;color:#666}" +
+    ".rep-h{font-size:1.1rem;font-weight:600;margin-top:34px;padding-bottom:8px;border-bottom:1px solid #ddd}" +
+    ".rep-list{margin:0;padding:0;list-style:none}" +
+    ".rep-list li{padding:10px 0;border-bottom:1px solid #eee;font-size:14.5px}" +
+    ".rep-list li em{font-style:normal;font-family:ui-monospace,Menlo,monospace;font-size:11.5px;color:#777;margin-right:10px}" +
+    ".rep-note{white-space:pre-wrap}" +
+    ".rep-foot{margin-top:36px;border-top:1px solid #999;padding-top:14px;font-size:13px;color:#333;line-height:1.8}";
+  var doc = '<!DOCTYPE html><html lang="pt-PT"><head><meta charset="utf-8">' +
+    '<title>Relatório — UFCD 6091 Domótica - generalidades</title><style>' + css + '</style></head><body>' +
+    document.getElementById("reportBody").innerHTML + '</body></html>';
+  var nome = (document.getElementById("stName").value.trim() || "formando")
+    .toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"");
+  var d = new Date();
+  var data = d.getFullYear() + "-" + String(d.getMonth()+1).padStart(2,"0") + "-" + String(d.getDate()).padStart(2,"0");
+  var blob = new Blob([doc], {type:"text/html;charset=utf-8"});
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement("a");
+  a.href = url; a.download = "ufcd6091-relatorio-" + nome + "-" + data + ".html";
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  setTimeout(function(){ URL.revokeObjectURL(url); }, 2000);
+  log("relatorio", "Descarregou o relatório em ficheiro");
+});
+
+/* ---------------- arranque ---------------- */
+rebuildPlans();
+renderRules();
+renderScenes();
+refreshAll();
+})();
+</script>
+</body>
+</html>
